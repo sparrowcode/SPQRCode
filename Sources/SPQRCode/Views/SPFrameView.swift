@@ -102,6 +102,8 @@ private extension SPFrameView {
         shapeLayer.strokeColor = UIColor.frameColor.cgColor
         shapeLayer.fillColor = nil
         shapeLayer.lineWidth = lineWidth
+
+        backgroundColor = .clear
     }
 
 }

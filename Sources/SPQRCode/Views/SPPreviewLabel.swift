@@ -59,7 +59,8 @@ public class SPPreviewLabel: UILabel {
 private extension SPPreviewLabel {
 
     private func comminInit() {
-        font = .preferredFont(forTextStyle: .caption1)
+        font = .systemFont(ofSize: 15, weight: .medium)
+        isUserInteractionEnabled = true
         clipsToBounds = true
         backgroundColor = .frameColor
         textColor = .black

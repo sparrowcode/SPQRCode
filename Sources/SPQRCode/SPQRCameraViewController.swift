@@ -25,14 +25,12 @@ import AVFoundation
 /**
  SPQRCameraViewController:  Main view. Can be customisable if need.
 
- For change duration, check method `present` and pass duration and other specific property if need customise.
+ Use `delegate` or `cameraFoundHandler` callback  to get recognition results.
 
- Here available set window on which shoud be present.
- If you have some windows, you shoud configure it. Check property `presentWindow`.
+ Example:
 
- For disable dismiss by tap, check property `.dismissByTap`.
-
- Recomended call `SPAlert` and choose style func.
+        let viewController = SPQRCameraViewController()
+        otherViewController.present(viewController)
  */
 open class SPQRCameraViewController: UIViewController {
 
@@ -57,8 +55,8 @@ open class SPQRCameraViewController: UIViewController {
     public var cameraFoundHandler: SPQRCameraFoundHandler?
     public var cameraDidPressHandler: SPQRCameraHandlerDidPressHandler?
 
-    private lazy var frameView: UIView = SPFrameView()
-    private lazy var previewView: UIView = SPPreviewLabel()
+    public var customFrameView: UIView?
+    public var customPreviewView: UIView?
 
     // MARK: - Private Properties
 
@@ -67,6 +65,15 @@ open class SPQRCameraViewController: UIViewController {
     // MARK: - Sublayers
 
     private lazy var videoPreviewLayer: AVCaptureVideoPreviewLayer = createVideoPreviewLayer()
+    private lazy var defaultFrameView = SPFrameView()
+    private lazy var defaultPreviewView = SPPreviewLabel()
+
+    private var frameView: UIView {
+        customFrameView ?? defaultFrameView
+    }
+    private var previewView: UIView {
+        customPreviewView ?? defaultPreviewView
+    }
 
     // MARK: - Private Properties
 
@@ -82,7 +89,7 @@ open class SPQRCameraViewController: UIViewController {
         super.init(coder: coder)
     }
 
-    public override func viewDidLoad() {
+    open override func viewDidLoad() {
         super.viewDidLoad()
         configureView()
         configureActions()
@@ -91,20 +98,24 @@ open class SPQRCameraViewController: UIViewController {
         captureSession.startRunning()
     }
 
-    public override func viewWillLayoutSubviews() {
+    open override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         videoPreviewLayer.frame = view.layer.bounds
     }
 
     open func updatePreviewView(for object: AVMetadataMachineReadableCodeObject) {
-        if let previewView = previewView as? SPPreviewLabel {
-            previewView.text = object.stringValue
+        if let string = object.stringValue {
+            if let url = URL(string: string) {
+                defaultPreviewView.text = "URL: \"\(url.absoluteString)\""
+            } else {
+                defaultPreviewView.text = "Text: \"\(string)\""
+            }
         }
     }
 
     // MARK: - Actions
 
-    @objc private func previewDidPress() {
+    @objc func previewDidPress(_ sender: UITapGestureRecognizer) {
         notifyDidPress()
     }
 
@@ -121,7 +132,6 @@ private extension SPQRCameraViewController {
     }
 
     private func configureSubviews() {
-        frameView.backgroundColor = .clear
         frameView.isHidden = true
         previewView.isHidden = true
     }
@@ -165,11 +175,17 @@ private extension SPQRCameraViewController {
     }
 
     private func configureActions() {
-        previewView.isUserInteractionEnabled = true
-        frameView.isUserInteractionEnabled = true
+        let previewViewTapGesture = UITapGestureRecognizer(
+            target: self,
+            action: #selector(previewDidPress)
+        )
+        let frameViewTapGesture = UITapGestureRecognizer(
+            target: self,
+            action: #selector(previewDidPress)
+        )
 
-        previewView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(previewDidPress)))
-        frameView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(previewDidPress)))
+        previewView.addGestureRecognizer(previewViewTapGesture)
+        frameView.addGestureRecognizer(frameViewTapGesture)
     }
 
 }
@@ -179,8 +195,8 @@ private extension SPQRCameraViewController {
 extension SPQRCameraViewController: AVCaptureMetadataOutputObjectsDelegate {
 
     open func metadataOutput(_ output: AVCaptureMetadataOutput,
-                               didOutput metadataObjects: [AVMetadataObject],
-                               from connection: AVCaptureConnection) {
+                             didOutput metadataObjects: [AVMetadataObject],
+                             from connection: AVCaptureConnection) {
         guard !metadataObjects.isEmpty else {
             return
         }
@@ -207,10 +223,10 @@ extension SPQRCameraViewController: AVCaptureMetadataOutputObjectsDelegate {
         if frameView.isHidden {
             frameView.frame = frame
         } else {
-            UIView.animate(withDuration: 0.3) {
+            UIView.animate(withDuration: 0.3, delay: 0.0, options: .allowUserInteraction, animations: {
                 self.frameView.frame = frame
                 self.view.layoutIfNeeded()
-            }
+            }, completion: nil)
         }
 
         previewView.isHidden = false
@@ -253,7 +269,7 @@ private extension SPQRCameraViewController {
 
     private func createVideoPreviewLayer() -> AVCaptureVideoPreviewLayer {
         let videoPreviewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
-        videoPreviewLayer.videoGravity = AVLayerVideoGravity.resizeAspectFill
+        videoPreviewLayer.videoGravity = .resizeAspectFill
         return videoPreviewLayer
     }
 
