@@ -10,43 +10,57 @@ import SPQRCode
 
 class ViewController: UIViewController {
 
-    private lazy var label = UILabel()
+    private lazy var titleLabel = UILabel()
+    private lazy var resultLabel = UILabel()
     private lazy var stackView = UIStackView()
-    private lazy var simplePresent = UIButton(configuration: .borderedTinted(), primaryAction: nil)
+    private lazy var showCustomScannerButton = createCustomButton()
+    private lazy var showBasicScannerButton = createBasicButton()
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         view.backgroundColor = .systemBackground
-        view.addSubview(label)
+        view.addSubview(titleLabel)
+        view.addSubview(resultLabel)
         view.addSubview(stackView)
 
-        label.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        resultLabel.translatesAutoresizingMaskIntoConstraints = false
         stackView.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
-            label.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
-            label.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32),
-            label.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 45),
+            titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
+            titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 45),
+
+            resultLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
+            resultLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
+            resultLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32),
 
             stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 64),
             stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -64),
             stackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -64),
+
+            showCustomScannerButton.heightAnchor.constraint(equalToConstant: 48),
+            showBasicScannerButton.heightAnchor.constraint(equalToConstant: 48),
         ])
 
-        stackView.addArrangedSubview(simplePresent)
+        stackView.spacing = 16
+        stackView.axis = .vertical
+        stackView.addArrangedSubview(showCustomScannerButton)
+        stackView.addArrangedSubview(showBasicScannerButton)
 
-        simplePresent.setTitle("Show Scanner", for: .normal)
-        simplePresent.addTarget(self, action: #selector(showScanner), for: .touchUpInside)
+        titleLabel.text = "Detected:"
+        titleLabel.font = .systemFont(ofSize: 17, weight: .semibold)
 
-        label.text = "Detected:\n---"
+        resultLabel.numberOfLines = 0
+        resultLabel.textColor = .secondaryLabel
     }
 
-    @objc private func showScanner() {
+    @objc private func showBasicScanner() {
         let vc = SPQRCameraViewController()
 
         vc.cameraFoundHandler = { [weak self] value in
-            self?.label.text = "Detected:\n" + value
+            self?.resultLabel.text = value
         }
         vc.cameraDidPressHandler = { [weak vc] in
             vc?.dismiss(animated: true, completion: nil)
@@ -55,5 +69,41 @@ class ViewController: UIViewController {
         present(vc, animated: true, completion: nil)
     }
 
+    @objc private func showCustomScanner() {
+        let vc = CustomCameraViewController()
+
+        vc.cameraFoundHandler = { [weak self] value in
+            self?.resultLabel.text = value
+        }
+        vc.cameraDidPressHandler = { [weak vc] in
+            vc?.dismiss(animated: true, completion: nil)
+        }
+
+        present(vc, animated: true, completion: nil)
+    }
+
+    private func createBasicButton() -> UIButton {
+        var configuration = UIButton.Configuration.borderedProminent()
+        configuration.contentInsets.top = 8
+        configuration.contentInsets.bottom = 8
+        configuration.title = "Show Basic Scanner"
+        configuration.cornerStyle = .dynamic
+
+        let button = UIButton(configuration: configuration, primaryAction: nil)
+        button.addTarget(self, action: #selector(showBasicScanner), for: .touchUpInside)
+        return button
+    }
+
+    private func createCustomButton() -> UIButton {
+        var configuration = UIButton.Configuration.borderedProminent()
+        configuration.contentInsets.top = 8
+        configuration.contentInsets.bottom = 8
+        configuration.title = "Show Custom Scanner"
+        configuration.cornerStyle = .dynamic
+
+        let button = UIButton(configuration: configuration, primaryAction: nil)
+        button.addTarget(self, action: #selector(showCustomScanner), for: .touchUpInside)
+        return button
+    }
 }
 
