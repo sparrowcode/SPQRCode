@@ -7,6 +7,10 @@ QR code detector. Simple usage, you can get recognition results via delegate or 
     - [CocoaPods](#cocoapods)
     - [Manually](#manually)
 - [Usage](#usage)
+    - [Full Screen](#full-screen)
+    - [Frame](#frame)
+    - [Appearance](#appearance)
+- [Supported Content](#supported-content)
 
 ## Installation
 

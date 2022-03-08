@@ -223,7 +223,7 @@ extension SPQRCameraViewController: AVCaptureMetadataOutputObjectsDelegate {
         if frameView.isHidden {
             frameView.frame = frame
         } else {
-            UIView.animate(withDuration: 0.3, delay: 0.0, options: .allowUserInteraction, animations: {
+            UIView.animate(withDuration: 0.3, delay: 0.0, options: [.allowUserInteraction, .beginFromCurrentState], animations: {
                 self.frameView.frame = frame
                 self.view.layoutIfNeeded()
             }, completion: nil)
