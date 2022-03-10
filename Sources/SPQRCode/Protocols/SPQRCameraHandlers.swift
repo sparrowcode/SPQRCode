@@ -19,5 +19,5 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-public typealias SPQRCameraFoundHandler = (String) -> Void
+public typealias SPQRCameraFoundHandler = (SPQRCode) -> Void
 public typealias SPQRCameraHandlerDidPressHandler = () -> Void

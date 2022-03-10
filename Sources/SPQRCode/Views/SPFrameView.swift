@@ -21,7 +21,7 @@
 
 import UIKit
 
-final class SPFrameView: UIView {
+public final class SPFrameView: UIView, SPQRCodeUpdatable {
 
     // MARK: - Subviews
 
@@ -40,11 +40,21 @@ final class SPFrameView: UIView {
         commonInit()
     }
 
-    override func layoutSubviews() {
+    public override func layoutSubviews() {
         super.layoutSubviews()
         shapeLayer.frame = bounds
         updateMaskLayer()
         updateShapeLayer()
+    }
+
+}
+
+// MARK: - Public Methods
+
+public extension SPFrameView {
+
+    func update(for result: SPQRCode) {
+        /* do nothing */
     }
 
 }

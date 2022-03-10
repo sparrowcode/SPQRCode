@@ -19,9 +19,10 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-public protocol SPQRCameraDelegate: AnyObject {
+import UIKit
 
-    func camera(_ viewController: SPQRCameraViewController, didFound result: SPQRCode)
-    func cameraDidPress(_ viewController: SPQRCameraViewController)
+public protocol SPQRCodeUpdatable {
+
+    func update(for result: SPQRCode)
 
 }

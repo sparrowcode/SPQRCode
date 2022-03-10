@@ -37,15 +37,7 @@ open class SPQRCameraViewController: UIViewController {
     // MARK: - Private Static Properties
 
     private static let supportedCodeTypes = [
-        AVMetadataObject.ObjectType.upce,
-        AVMetadataObject.ObjectType.code39,
-        AVMetadataObject.ObjectType.code39Mod43,
-        AVMetadataObject.ObjectType.code93,
-        AVMetadataObject.ObjectType.code128,
-        AVMetadataObject.ObjectType.ean8,
-        AVMetadataObject.ObjectType.ean13,
         AVMetadataObject.ObjectType.aztec,
-        AVMetadataObject.ObjectType.pdf417,
         AVMetadataObject.ObjectType.qr
     ]
 
@@ -103,14 +95,35 @@ open class SPQRCameraViewController: UIViewController {
         videoPreviewLayer.frame = view.layer.bounds
     }
 
-    open func updatePreviewView(for object: AVMetadataMachineReadableCodeObject) {
-        if let string = object.stringValue {
-            if let url = URL(string: string) {
-                defaultPreviewView.text = "URL: \"\(url.absoluteString)\""
-            } else {
-                defaultPreviewView.text = "Text: \"\(string)\""
+    open func updateViews(result: SPQRCode) {
+        if let updatableFrameView = frameView as? SPQRCodeUpdatable {
+            updatableFrameView.update(for: result)
+        }
+
+        if let updatablePreviewView = previewView as? SPQRCodeUpdatable {
+            updatablePreviewView.update(for: result)
+        }
+    }
+
+    open func convert(object: AVMetadataMachineReadableCodeObject) -> SPQRCode? {
+        guard let string = object.stringValue else {
+            return nil
+        }
+
+        if let components = URLComponents(string: string), components.scheme != nil {
+            if let url = components.url {
+                return .url(url)
             }
         }
+
+        if let pattern = try? NSRegularExpression(pattern: "^0x[a-fA-F0-9]{40}$") {
+            let range = NSRange(location: 0, length: string.count)
+            if pattern.firstMatch(in: string, range: range) != nil {
+                return .ethWallet(string)
+            }
+        }
+
+        return .text(string)
     }
 
     // MARK: - Actions
@@ -147,12 +160,12 @@ private extension SPQRCameraViewController {
         let leadingPreviewConstraint = previewView.leadingAnchor.constraint(
             lessThanOrEqualTo: frameView.leadingAnchor
         )
-        leadingPreviewConstraint.priority = .defaultHigh
+        leadingPreviewConstraint.priority = .defaultLow
 
         let trailingPreviewConstraint = previewView.trailingAnchor.constraint(
             greaterThanOrEqualTo: frameView.trailingAnchor
         )
-        trailingPreviewConstraint.priority = .defaultHigh
+        trailingPreviewConstraint.priority = .defaultLow
 
         NSLayoutConstraint.activate([
             centerPreviewConstraint,
@@ -213,17 +226,23 @@ extension SPQRCameraViewController: AVCaptureMetadataOutputObjectsDelegate {
             return
         }
 
-        guard let qrString = metadataObj.stringValue else {
+        guard let result = convert(object: metadataObj) else {
             return
         }
 
-        updatePreviewView(for: metadataObj)
-        notifyFound(string: qrString)
+        updateViews(result: result)
+        notifyFound(result: result)
 
         if frameView.isHidden {
             frameView.frame = frame
         } else {
-            UIView.animate(withDuration: 0.3, delay: 0.0, options: [.allowUserInteraction, .beginFromCurrentState], animations: {
+            let options: UIView.AnimationOptions = [
+                .allowUserInteraction,
+                .beginFromCurrentState,
+                .curveEaseInOut,
+            ]
+
+            UIView.animate(withDuration: 0.2, delay: 0.0, options: options, animations: {
                 self.frameView.frame = frame
                 self.view.layoutIfNeeded()
             }, completion: nil)
@@ -233,7 +252,7 @@ extension SPQRCameraViewController: AVCaptureMetadataOutputObjectsDelegate {
         frameView.isHidden = false
 
         updateTimer?.invalidate()
-        updateTimer = Timer(fire: Date(timeIntervalSinceNow: 0.5), interval: 2, repeats: false, block: { _ in
+        updateTimer = Timer(fire: Date(timeIntervalSinceNow: 0.8), interval: 2, repeats: false, block: { _ in
             self.frameView.isHidden = true
             self.previewView.isHidden = true
         })
@@ -273,11 +292,11 @@ private extension SPQRCameraViewController {
         return videoPreviewLayer
     }
 
-    private func notifyFound(string: String) {
+    private func notifyFound(result: SPQRCode) {
         if let delegate = delegate {
-            delegate.camera(self, didFound: string)
+            delegate.camera(self, didFound: result)
         } else {
-            cameraFoundHandler?(string)
+            cameraFoundHandler?(result)
         }
     }
 
