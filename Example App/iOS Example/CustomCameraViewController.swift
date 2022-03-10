@@ -43,8 +43,4 @@ final class CustomCameraViewController: SPQRCameraViewController {
         ])
     }
 
-    override func updatePreviewView(for object: AVMetadataMachineReadableCodeObject) {
-        label.text = object.stringValue
-    }
-
 }
