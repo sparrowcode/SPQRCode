@@ -19,9 +19,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-public protocol SPQRCameraDelegate: AnyObject {
+import Foundation
 
-    func camera(_ viewController: SPQRCameraViewController, didFound result: SPQRCode)
-    func cameraDidPress(_ viewController: SPQRCameraViewController)
+public enum SPQRCode {
+
+    case text(String)
+    case url(URL)
+    case ethWallet(String)
 
 }

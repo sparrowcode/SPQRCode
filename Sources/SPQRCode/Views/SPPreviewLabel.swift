@@ -21,9 +21,15 @@
 
 import UIKit
 
-public class SPPreviewLabel: UILabel {
+public class SPPreviewLabel: UIView {
 
-    private static let insets = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16)
+    // MARK: - Subviews
+
+    private lazy var stackView = UIStackView()
+
+    private lazy var iconImageView = UIImageView()
+    private lazy var label = UILabel()
+    private lazy var chevronImageView = UIImageView()
 
     // MARK: - Lifecycle
 
@@ -42,29 +48,87 @@ public class SPPreviewLabel: UILabel {
         layer.cornerRadius = min(bounds.midY, 16)
     }
 
-    public override var intrinsicContentSize: CGSize {
-        let size = super.intrinsicContentSize
-        return CGSize(
-            width: size.width + Self.insets.left + Self.insets.right,
-            height: size.height + Self.insets.top + Self.insets.bottom
-        )
-    }
+}
 
-    public override func drawText(in rect: CGRect) {
-        super.drawText(in: rect.inset(by: Self.insets))
+// MARK: - SPQRCodeUpdatable
+
+extension SPPreviewLabel: SPQRCodeUpdatable {
+
+    public func update(for result: SPQRCode) {
+        switch result {
+        case .text(let string):
+            label.text = string
+            iconImageView.setImage(systemName: "doc.plaintext.fill")
+        case .url(let url):
+            label.text = url.host
+            iconImageView.setImage(systemName: "safari.fill")
+        case .ethWallet(let string):
+            label.text = string
+            iconImageView.setImage(systemName: "bitcoinsign.circle.fill")
+        }
     }
 
 }
 
+// MARK: - Private Methods
+
 private extension SPPreviewLabel {
 
     private func comminInit() {
-        font = .systemFont(ofSize: 15, weight: .medium)
+        configureView()
+        configureSubviews()
+        configureConstraints()
+    }
+
+    private func configureView() {
         isUserInteractionEnabled = true
         clipsToBounds = true
-        backgroundColor = .frameColor
-        textColor = .black
-        numberOfLines = 0
+        backgroundColor = .previewColor
+
+        addSubview(stackView)
+
+        stackView.addArrangedSubview(iconImageView)
+        stackView.addArrangedSubview(label)
+        stackView.addArrangedSubview(chevronImageView)
+
+        iconImageView.setContentHuggingPriority(.required, for: .horizontal)
+        iconImageView.setContentHuggingPriority(.required, for: .vertical)
+        iconImageView.setContentCompressionResistancePriority(.required, for: .horizontal)
+        iconImageView.setContentCompressionResistancePriority(.required, for: .vertical)
+    }
+
+    private func configureSubviews() {
+        if #available(iOS 13.0, *) {
+            iconImageView.tintColor = .black
+            chevronImageView.tintColor = .gray
+            chevronImageView.image = UIImage(systemName: "chevron.right")
+            chevronImageView.contentMode = .scaleAspectFit
+            chevronImageView.preferredSymbolConfiguration = .init(font: .systemFont(ofSize: 12, weight: .medium))
+            iconImageView.preferredSymbolConfiguration = .init(font: .systemFont(ofSize: 13, weight: .medium))
+        } else {
+            iconImageView.isHidden = true
+            chevronImageView.isHidden = true
+        }
+
+        label.font = .systemFont(ofSize: 13, weight: .medium)
+        label.textColor = .black
+        label.numberOfLines = 0
+
+        stackView.axis = .horizontal
+        stackView.setCustomSpacing(4, after: iconImageView)
+        stackView.setCustomSpacing(8, after: label)
+    }
+
+    private func configureConstraints() {
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        iconImageView.translatesAutoresizingMaskIntoConstraints = false
+
+        NSLayoutConstraint.activate([
+            stackView.topAnchor.constraint(equalTo: topAnchor, constant: 8),
+            stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8),
+            stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
+            stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
+        ])
     }
 
 }

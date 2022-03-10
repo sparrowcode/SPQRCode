@@ -19,9 +19,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-public protocol SPQRCameraDelegate: AnyObject {
+import UIKit
 
-    func camera(_ viewController: SPQRCameraViewController, didFound result: SPQRCode)
-    func cameraDidPress(_ viewController: SPQRCameraViewController)
+extension UIImageView {
+
+    func setImage(systemName: String) {
+        if #available(iOS 13.0, *) {
+            image = UIImage(systemName: systemName)
+        }
+    }
 
 }

@@ -297,7 +297,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 5KKK9SKF79;
+				DEVELOPMENT_TEAM = U35323S562;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "iOS Example/Info.plist";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Need for testing purpose";
@@ -327,7 +327,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 5KKK9SKF79;
+				DEVELOPMENT_TEAM = U35323S562;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "iOS Example/Info.plist";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Need for testing purpose";
