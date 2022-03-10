@@ -68,6 +68,15 @@ qrCodeController.customPreviewView = previewLabel
 
 qrCodeController.cameraFoundHandler = { [weak previewLabel] value in
     previewLabel?.text = value
+    
+    switch result {
+    case .text(let string):
+        previewLabel?.text = string
+    case .url(let url):
+        previewLabel?.text = url.absoluteString
+    case .ethWallet(let string):
+        label.text = string
+    }
 }
 
 viewController.present(qrCodeController, animated: true, completion: nil)
