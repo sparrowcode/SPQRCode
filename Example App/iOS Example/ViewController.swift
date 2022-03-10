@@ -60,7 +60,14 @@ class ViewController: UIViewController {
         let vc = SPQRCameraViewController()
 
         vc.cameraFoundHandler = { [weak self] value in
-            self?.resultLabel.text = value
+            switch value {
+            case .text(let string):
+                self?.resultLabel.text = "Text: '\(string)'"
+            case .ethWallet(let wallet):
+                self?.resultLabel.text = "ETH Wallet: '\(wallet)'"
+            case .url(let url):
+                self?.resultLabel.text = "Text: '\(url.absoluteString)'"
+            }
         }
         vc.cameraDidPressHandler = { [weak vc] in
             vc?.dismiss(animated: true, completion: nil)
@@ -73,7 +80,14 @@ class ViewController: UIViewController {
         let vc = CustomCameraViewController()
 
         vc.cameraFoundHandler = { [weak self] value in
-            self?.resultLabel.text = value
+            switch value {
+            case .text(let string):
+                self?.resultLabel.text = "Text: '\(string)'"
+            case .ethWallet(let wallet):
+                self?.resultLabel.text = "ETH Wallet: '\(wallet)'"
+            case .url(let url):
+                self?.resultLabel.text = "Text: '\(url.absoluteString)'"
+            }
         }
         vc.cameraDidPressHandler = { [weak vc] in
             vc?.dismiss(animated: true, completion: nil)
