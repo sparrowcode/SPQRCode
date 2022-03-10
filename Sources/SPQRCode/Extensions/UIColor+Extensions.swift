@@ -24,7 +24,7 @@ import UIKit
 
 extension UIColor {
 
-    #warning("system orage?")
     static let frameColor = UIColor(red: 0.992, green: 0.8, blue: 0, alpha: 1)
+    static let previewColor = UIColor(red: 1, green: 0.835, blue: 0.043, alpha: 1)
 
 }
