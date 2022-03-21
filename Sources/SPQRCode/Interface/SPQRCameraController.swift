@@ -77,6 +77,7 @@ open class SPQRCameraController: SPController {
         view.addSubviews(handleButton, cancelButton)
         
         handleButton.addTarget(self, action: #selector(didTapHandledButton), for: .touchUpInside)
+        cancelButton.addTarget(self, action: #selector(didTapCancelButton), for: .touchUpInside)
         
         updateInterface()
     }
@@ -86,6 +87,10 @@ open class SPQRCameraController: SPController {
     @objc func didTapHandledButton() {
         guard let data = qrCodeData else { return }
         handledQRCodeData?(data, self)
+    }
+    
+    @objc func didTapCancelButton() {
+        dismissAnimated()
     }
     
     // MARK: - Layout

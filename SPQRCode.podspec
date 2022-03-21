@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name = 'SPQRCode'
-  s.version = '1.0.0'
+  s.version = '1.0.1'
   s.summary = 'The native QR code scanner of iOS. Repeated system scanner from the camera app.'
   s.homepage = 'https://github.com/sparrowcode/SPQRCode'
   s.source = { :git => 'https://github.com/sparrowcode/SPQRCode.git', :tag => s.version }
