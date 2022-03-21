@@ -1,0 +1,5 @@
+"action handle" = "Catch";
+"action cancel" = "Cancel";
+"qr code data text prefix" = "Text";
+"qr code data url prefix" = "Website";
+"qr code data eth wallet prefix" = "ETH Wallet";

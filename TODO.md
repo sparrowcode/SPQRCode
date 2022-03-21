@@ -2,4 +2,8 @@
 
 Here provided ideas or features which will be implemented soon.
 
-- // Task
+- Readme
+- Example app
+- Promote
+    - Featured home
+    - opensource
