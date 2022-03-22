@@ -35,6 +35,13 @@ extension SPQRCameraController: AVCaptureMetadataOutputObjectsDelegate {
         guard let transformedObject = previewLayer.transformedMetadataObject(for: object) as? AVMetadataMachineReadableCodeObject else { return }
         
         let points = transformedObject.corners
+        guard let firstPoint = points.first else { return }
+        let path = UIBezierPath()
+        path.move(to: firstPoint)
+        var newPoints = points
+        newPoints.removeFirst()
+        newPoints.append(firstPoint)
+        newPoints.forEach { path.addLine(to: $0) }
         
         // Update Detail
         
@@ -84,7 +91,7 @@ extension SPQRCameraController: AVCaptureMetadataOutputObjectsDelegate {
         
         // Update Frame
         
-        frameLayer.update(using: points)
+        frameLayer.update(with: path)
         
         // Timer
         
