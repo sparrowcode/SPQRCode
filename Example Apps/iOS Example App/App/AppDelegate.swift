@@ -1,10 +1,3 @@
-//
-//  AppDelegate.swift
-//  SPQRCode
-//
-//  Created by Ivan Vorobei on 21.03.22.
-//
-
 import UIKit
 
 @main

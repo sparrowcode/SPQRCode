@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "F4D5A51827E83F9100121852"
-               BuildableName = "SPQRCode.app"
+               BuildableName = "iOS Example App.app"
                BlueprintName = "iOS Example App"
                ReferencedContainer = "container:SPQRCode.xcodeproj">
             </BuildableReference>
@@ -45,7 +45,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "F4D5A51827E83F9100121852"
-            BuildableName = "SPQRCode.app"
+            BuildableName = "iOS Example App.app"
             BlueprintName = "iOS Example App"
             ReferencedContainer = "container:SPQRCode.xcodeproj">
          </BuildableReference>
@@ -62,7 +62,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "F4D5A51827E83F9100121852"
-            BuildableName = "SPQRCode.app"
+            BuildableName = "iOS Example App.app"
             BlueprintName = "iOS Example App"
             ReferencedContainer = "container:SPQRCode.xcodeproj">
          </BuildableReference>

@@ -26,7 +26,7 @@ import NativeUIKit
 
 open class SPQRCameraController: SPController {
     
-    open var detectQRCodeData: ((SPQRCodeData)->SPQRCodeData?) = { data in return data }
+    open var detectQRCodeData: ((SPQRCodeData, SPQRCameraController)->SPQRCodeData?) = { data, _ in return data }
     open var handledQRCodeData: ((SPQRCodeData, SPQRCameraController)->Void?)? = nil
 
     internal var updateTimer: Timer?
