@@ -14,7 +14,7 @@ Once you have your Swift package set up, adding as a dependency is as easy as ad
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/sparrowcode/SPQRCode", .upToNextMajor(from: "1.0.1"))
+.package(url: "https://github.com/sparrowcode/SPQRCode", .upToNextMajor(from: "1.0.2"))
 ]
 ```
 
@@ -24,20 +24,20 @@ If you prefer not to use any of dependency managers, you can integrate manually.
 
 ## Usage
 
-Filter with handling data and simple example.
+Example for handle QRCode.
 
 ```swift
 SPQRCode.scanning(
-  detect: { data in
-    switch data {
-    case .ethWallet(let address):
-      return data
-    default: return nil
-    }
-  }, 
-  handled: { data, controller in
-    controller.dismiss(animated: true)
-  },
-  on: self
+    detect: { data, controller in
+        return data
+    }, 
+    handled: { data, controller in
+        controller.dismiss(animated: true)
+    },
+    on: self
 )
 ```
+
+If you want allow handle only specific type, like url or Ethereum wallet, in `detect` handler retun nil if you don't want handle current QR code data.
+
+

@@ -31,7 +31,7 @@ extension SPQRCameraController: AVCaptureMetadataOutputObjectsDelegate {
         guard let object = metadataObjects.first as? AVMetadataMachineReadableCodeObject else { return }
         guard Self.supportedCodeTypes.contains(object.type) else { return }
         guard let detectedData = convert(object: object) else { return }
-        let observingData = detectQRCodeData(detectedData)
+        let observingData = detectQRCodeData(detectedData, self)
         guard let transformedObject = previewLayer.transformedMetadataObject(for: object) as? AVMetadataMachineReadableCodeObject else { return }
         
         let points = transformedObject.corners

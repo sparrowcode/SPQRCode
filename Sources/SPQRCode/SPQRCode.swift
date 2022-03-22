@@ -24,7 +24,11 @@ import UIKit
 
 public class SPQRCode {
     
-    public static func scanning(detect: ((SPQRCodeData?)->SPQRCodeData?)? = nil, handled: ((SPQRCodeData, SPQRCameraController)->Void)?, on controller: UIViewController) {
+    public static func scanning(
+        detect: ((SPQRCodeData?, SPQRCameraController)->SPQRCodeData?)? = nil,
+        handled: ((SPQRCodeData, SPQRCameraController)->Void)?,
+        on controller: UIViewController
+    ) {
         let qrController = SPQRCameraController()
         if let detect = detect {
             qrController.detectQRCodeData = detect
