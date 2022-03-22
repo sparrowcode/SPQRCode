@@ -6,6 +6,3 @@ Here provided ideas or features which will be implemented soon.
 - Readme more details
 - Update frame
 - Promote
-    - cocoacontrols
-    - opensource page + video
-    - my channel?
