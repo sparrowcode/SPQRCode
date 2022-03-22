@@ -49,6 +49,19 @@ class SPQRFrameLayer: CAShapeLayer {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func action(forKey event: String) -> CAAction? {
+        if event == "path" {
+            let animation: CABasicAnimation = .init(keyPath: event)
+            
+            animation.duration = 0.3
+            animation.timingFunction = CATransaction.animationTimingFunction()
+            
+            return animation
+        }
+        
+        return super.action(forKey: event)
+    }
+    
     // MARK: - Actions
     
     func update(using points: [CGPoint]) {
