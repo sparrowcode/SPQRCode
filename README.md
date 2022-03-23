@@ -34,7 +34,7 @@ SPQRCode.scanning(
     handled: { data, controller in
         controller.dismiss(animated: true)
     },
-    on: self
+    on: viewController
 )
 ```
 
