@@ -1,6 +1,6 @@
 # SPQRCode
 
-<img src="https://user-images.githubusercontent.com/10995774/159240125-e95bdd73-63e8-42a7-b2fc-a3073f2d3f2b.PNG" height="550"/>
+<img src="https://user-images.githubusercontent.com/10995774/159624802-497afa7c-70f5-4bd5-893b-dfe01818456b.jpeg" height="550"/>
 
 ## Installation
 
