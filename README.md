@@ -38,6 +38,6 @@ SPQRCode.scanning(
 )
 ```
 
-If you want allow handle only specific type, like url or Ethereum wallet, in `detect` handler retun nil if you don't want handle current QR code data.
+If you want allow handle only specific type, like url or Ethereum wallet, in `detect` handler retun `nil` if you don't want handle current QR code data.
 
 
