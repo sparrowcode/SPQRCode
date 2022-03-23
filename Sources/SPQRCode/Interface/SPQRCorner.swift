@@ -19,12 +19,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-
 import Foundation
 import CoreGraphics
 
 struct SPQRCorner: Equatable {
+    
     enum Kind: Int, CaseIterable {
+        
         case topLeft = 0
         case bottomLeft = 1
         case bottomRight = 2
