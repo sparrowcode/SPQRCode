@@ -14,7 +14,7 @@ Once you have your Swift package set up, adding as a dependency is as easy as ad
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/sparrowcode/SPQRCode", .upToNextMajor(from: "1.0.2"))
+    .package(url: "https://github.com/sparrowcode/SPQRCode", .upToNextMajor(from: "1.0.3"))
 ]
 ```
 
