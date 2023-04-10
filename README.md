@@ -2,6 +2,23 @@
 
 <img src="https://user-images.githubusercontent.com/10995774/159624802-497afa7c-70f5-4bd5-893b-dfe01818456b.jpeg" height="550"/>
 
+### Community
+
+<p float="left">
+    <a href="https://twitter.com/sparrowcode_en">
+        <img src="https://cdn.sparrowcode.io/github%2Fbadges%2Ftwitter.png?version=4" height="52">
+    </a>
+    <a href="https://t.me/sparrowcode_en">
+        <img src="https://cdn.sparrowcode.io/github/badges/telegram.png?version=1" height="52">
+    </a>
+    <a href="https://mastodon.social/@sparrowcode_en">
+        <img src="https://cdn.sparrowcode.io/github/badges/mastodon.png?version=2" height="52">
+    </a>
+    <a href="#apps-using">
+        <img src="https://cdn.sparrowcode.io/github/badges/download-on-the-appstore.png?version=4" height="52">
+    </a>
+</p>
+
 ## Installation
 
 Ready for use on iOS 13+.
